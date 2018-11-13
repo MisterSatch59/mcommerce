@@ -1,4 +1,4 @@
-package com.mproduits.configurations;
+package com.mcommandes.configurations;
 
 import brave.sampler.Sampler;
 import org.springframework.context.annotation.Configuration;

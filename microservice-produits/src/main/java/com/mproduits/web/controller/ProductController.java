@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,15 +42,13 @@ public class ProductController implements HealthIndicator {
     // Affiche la liste de tous les produits disponibles
     @GetMapping(value = "/Produits")
     public List<Product> listeDesProduits(){
+    	log.info("*************** microservice-produits : listeDesProduits");
 
         List<Product> products = productDao.findAll();
 
         if(products.isEmpty()) throw new ProductNotFoundException("Aucun produit n'est disponible à la vente");
 
         List<Product> listeLimitee = products.subList(0, appProperties.getLimitDeProduits());
-
-
-        log.info("Récupération de la liste des produits");
 
         return listeLimitee;
 
@@ -60,6 +57,7 @@ public class ProductController implements HealthIndicator {
     //Récuperer un produit par son id
     @GetMapping( value = "/Produits/{id}")
     public Optional<Product> recupererUnProduit(@PathVariable int id) {
+    	log.info("*************** microservice-produits : recupererUnProduit avec id = " + id);
 
         Optional<Product> product = productDao.findById(id);
 

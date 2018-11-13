@@ -15,9 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -47,7 +44,7 @@ public class ClientController {
     public String accueil(Model model){
 
 
-        log.info("Envoi requête vers microservice-produits");
+        log.info("*************** Envoi requête vers microservice-produits : listeDesProduits");
 
         List<ProductBean> produits =  ProduitsProxy.listeDesProduits();
 
@@ -64,6 +61,8 @@ public class ClientController {
     * */
     @RequestMapping("/details-produit/{id}")
     public String ficheProduit(@PathVariable int id,  Model model){
+    	
+    	log.info("*************** Envoi requête vers microservice-produits : recupererUnProduit avec id = " + id);
 
         ProductBean produit = ProduitsProxy.recupererUnProduit(id);
 
@@ -78,8 +77,7 @@ public class ClientController {
     * */
     @RequestMapping(value = "/commander-produit/{idProduit}/{montant}")
     public String passerCommande(@PathVariable int idProduit, @PathVariable Double montant,  Model model){
-
-
+    	
         CommandeBean commande = new CommandeBean();
 
         //On renseigne les propriétés de l'objet de type CommandeBean que nous avons crée
@@ -88,6 +86,8 @@ public class ClientController {
         commande.setDateCommande(new Date());
 
         //appel du microservice commandes grâce à Feign et on récupère en retour les détails de la commande créée, notamment son ID (étape 4).
+        log.info("*************** Envoi requête vers microservice-commandes : ajouterCommande avec commande = " + commande);
+        
         CommandeBean commandeAjoutee = CommandesProxy.ajouterCommande(commande);
 
         //on passe à la vue l'objet commande et le montant de celle-ci afin d'avoir les informations nécessaire pour le paiement
@@ -112,6 +112,8 @@ public class ClientController {
         paiementAExcecuter.setNumeroCarte(numcarte()); // on génère un numéro au hasard pour simuler une CB
 
         // On appel le microservice et (étape 7) on récupère le résultat qui est sous forme ResponseEntity<PaiementBean> ce qui va nous permettre de vérifier le code retour.
+        log.info("*************** Envoi requête vers microservice-paiement : payerUneCOmmande avec paiementAExcecuter = " + paiementAExcecuter);
+        
         ResponseEntity<PaiementBean> paiement = paiementProxy.payerUneCommande(paiementAExcecuter);
 
         Boolean paiementAccepte = false;

@@ -5,6 +5,9 @@ import com.mcommandes.dao.CommandesDao;
 import com.mcommandes.model.Commande;
 import com.mcommandes.web.exceptions.CommandeNotFoundException;
 import com.mcommandes.web.exceptions.ImpossibleAjouterCommandeException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +20,12 @@ public class CommandeController {
 
     @Autowired
     CommandesDao commandesDao;
+    
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping (value = "/commandes")
     public ResponseEntity<Commande> ajouterCommande(@RequestBody Commande commande){
+    	log.info("*************** microservice-commandes : ajouterCommande avec commande = " + commande);
 
         Commande nouvelleCommande = commandesDao.save(commande);
 
@@ -30,6 +36,7 @@ public class CommandeController {
 
     @GetMapping(value = "/commandes/{id}")
     public Optional<Commande> recupererUneCommande(@PathVariable int id){
+    	log.info("*************** microservice-commandes : recupererUneCommande avec id = " + id);
 
         Optional<Commande> commande = commandesDao.findById(id);
 
@@ -45,6 +52,7 @@ public class CommandeController {
     **/
     @PutMapping(value = "/commandes")
     public void updateCommande(@RequestBody Commande commande) {
+    	log.info("*************** microservice-commandes : updateCommande avec commande = " + commande);
 
         commandesDao.save(commande);
     }
