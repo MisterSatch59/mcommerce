@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "4ad50937-a367-46fb-8371-b6613565a4da",
+		"name": "Activité-Test",
+		"description": "Tests du microservice créé pour l'activité",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:9006/expeditions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 4,\n    \"idCommande\": 5,\n    \"etat\": 0\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9006/expeditions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9006",
+					"path": [
+						"expeditions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9006/expeditions/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9006/expeditions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9006",
+					"path": [
+						"expeditions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9006/expeditions",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"idCommande\": 40,\n    \"etat\": 2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9006/expeditions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9006",
+					"path": [
+						"expeditions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9006/expeditions/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9006/expeditions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9006",
+					"path": [
+						"expeditions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,9 +1,14 @@
 package com.mproduits.web.controller;
 
+import com.mproduits.configurations.ApplicationPropertiesConfiguration;
 import com.mproduits.dao.ProductDao;
 import com.mproduits.model.Product;
 import com.mproduits.web.exceptions.ProductNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,26 +17,47 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ProductController {
+public class ProductController implements HealthIndicator {
 
     @Autowired
     ProductDao productDao;
 
+
+    Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    ApplicationPropertiesConfiguration appProperties;
+
+    @Override
+    public Health health() {
+
+        List<Product> products = productDao.findAll();
+
+        if(products.isEmpty()) {
+            return Health.down().build();
+        }
+        return Health.up().build();
+    }
+
     // Affiche la liste de tous les produits disponibles
     @GetMapping(value = "/Produits")
     public List<Product> listeDesProduits(){
+    	log.info("*************** microservice-produits : listeDesProduits");
 
         List<Product> products = productDao.findAll();
 
         if(products.isEmpty()) throw new ProductNotFoundException("Aucun produit n'est disponible à la vente");
 
-        return products;
+        List<Product> listeLimitee = products.subList(0, appProperties.getLimitDeProduits());
+
+        return listeLimitee;
 
     }
 
     //Récuperer un produit par son id
     @GetMapping( value = "/Produits/{id}")
     public Optional<Product> recupererUnProduit(@PathVariable int id) {
+    	log.info("*************** microservice-produits : recupererUnProduit avec id = " + id);
 
         Optional<Product> product = productDao.findById(id);
 
